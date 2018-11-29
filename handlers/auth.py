@@ -9,9 +9,11 @@ class AuthenticatedRequestHandler(web.RequestHandler):
     # Token validity is automatically check
     def get_current_user(self):
         auth_header = self.request.headers.get('Authorization', '')
-        bearer = auth_header.split(' ')[1]
-        if auth_header is None or bearer is None:
+
+        if auth_header is None or len(auth_header.split(' ')) < 2 is None:
             raise web.HTTPError(401, reason='Unauthorized')
+
+        bearer = auth_header.split(' ')[1]
 
         # Retrieve JWK from server
         # JWK contains public key that is used for decode JWT token
